@@ -84,8 +84,13 @@ def local_variable_sub(current_line):
         if temp[0] > 31 or temp[1] > 31:
             array_size = max(temp[0],temp[1])
             array_size = str(int(math.ceil(array_size / 32.0)))
-            array_size = "[" + array_size + "]" + "={0};"
-            current_line = re.sub(r"=0;", array_size, current_line)
+            if re.search("=0;",current_line):
+                array_size = "[" + array_size + "]" + "={0};"
+                current_line = re.sub(r"=0;", array_size, current_line)
+            else:
+                array_size = "[" + array_size + "]"
+                current_line = re.sub(r"=", array_size + "=", current_line)
+                current_line = re.sub(r";", ";//!!!the value may need to revise", current_line)
 
     return current_line
 
